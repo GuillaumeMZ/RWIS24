@@ -1,17 +1,24 @@
 import React, { useState } from 'react';
 import { Pressable, View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useDataContext } from '../DataContext';
 
 export default function User1() {
+  const { ingredients, addUserSelection } = useDataContext();
   const router = useRouter();
-  const handleSubmit = () => {};
-
   const [selectedItems, setSelectedItems] = useState<{ [key: string]: number }>({});
 
-  const items = ['Item 1', 'Item 2', 'Item 3'];
+  const handleSelect = (ingredient: string) => {
+    setSelectedItems((prev) => ({ ...prev, [ingredient]: (prev[ingredient] || 0) + 1 }));
+  };
 
-  const handleSelect = (item: string) => {
-    setSelectedItems({ ...selectedItems, [item]: (selectedItems[item] || 0) + 1 });
+  const handleSave = () => {
+    Object.keys(selectedItems).forEach((ingredient) => {
+      const ingredientData = ingredients.find((item) => item.name === ingredient);
+      if (ingredientData) {
+        addUserSelection('User1', ingredient, selectedItems[ingredient], ingredientData.price);
+      }
+    });
   };
 
   return (
@@ -19,32 +26,34 @@ export default function User1() {
       <Pressable style={styles.returnToMenuButton} onPress={() => router.push("/")}>
         <Text style={styles.returnToMenuButtonText}>Main Menu</Text>
       </Pressable>
-
-    <View style={styles.container}>
-      <Text style={styles.title}>What Will You Eat?</Text>
-      <View style={styles.displayBox}>
-        {items.map((item) => (
-          <View key={item} style={styles.itemContainer}>
-            <Text>{item}</Text>
-            {selectedItems[item] ? (
-              <TextInput
-                style={styles.quantityInput}
-                value={selectedItems[item].toString()}
-                keyboardType="numeric"
-                onChangeText={(text) => setSelectedItems({ ...selectedItems, [item]: parseInt(text) })}
-              />
-            ) : (
-              <TouchableOpacity style={styles.button} onPress={() => handleSelect(item)}>
-                <Text style={styles.buttonText}>Select</Text>
-              </TouchableOpacity>
-            )}
-          </View>
-        ))}
+      <View style={styles.container}>
+        <Text style={styles.title}>What Will You Eat?</Text>
+        <View style={styles.displayBox}>
+          {ingredients.map((ingredient) => (
+            <View key={ingredient.name} style={styles.itemContainer}>
+              <Text>{ingredient.name}</Text>
+              <Text>{`$${ingredient.price.toFixed(2)}`}</Text>
+              {selectedItems[ingredient.name] ? (
+                <TextInput
+                  style={styles.quantityInput}
+                  value={selectedItems[ingredient.name].toString()}
+                  keyboardType="numeric"
+                  onChangeText={(text) =>
+                    setSelectedItems({ ...selectedItems, [ingredient.name]: parseInt(text) })
+                  }
+                />
+              ) : (
+                <TouchableOpacity style={styles.button} onPress={() => handleSelect(ingredient.name)}>
+                  <Text style={styles.buttonText}>Select</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+          ))}
+        </View>
+        <TouchableOpacity style={styles.button_save} onPress={handleSave}>
+          <Text style={styles.buttonText_save}>Save</Text>
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.button_save}>
-        <Text style={styles.buttonText_save}>Save</Text>
-      </TouchableOpacity>
-    </View>
     </>
   );
 }
@@ -57,11 +66,9 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     fontSize: 15,
-
     marginLeft: 20,
     marginTop: 20,
   },
-
   container: {
     flex: 1,
     padding: 20,
@@ -72,7 +79,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 24,
     marginBottom: 20,
-    textAlign: 'center', 
+    textAlign: 'center',
     fontWeight: 'bold',
   },
   displayBox: {
@@ -106,8 +113,6 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontWeight: 'bold',
-    fontSize: 16,
-    paddingHorizontal: 5,
   },
   button_save: {
     padding: 10,
@@ -122,6 +127,6 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     fontSize: 16,
-    paddingHorizontal: 20,
   },
 });
+

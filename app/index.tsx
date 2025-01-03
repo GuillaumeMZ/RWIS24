@@ -16,7 +16,7 @@ export default function Index() {
         style={styles.image}
       />
 
-      <Text style={styles.welcomeText}>Welcome, Barbecuer!</Text>
+      <Text style={styles.welcomeText}>Welcome Barbecuer!</Text>
 
       <View>
         <TouchableOpacity style={styles.button} onPress={() => router.push("admin/admin0")}>
