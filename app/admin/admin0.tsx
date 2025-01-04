@@ -76,7 +76,7 @@ export default function Admin0() {
         <Text style={styles.returnToMenuButtonText}>Main Menu</Text>
       </Pressable>
       <View style={styles.container}>
-        <Text style={styles.title}>Edit Barbecue</Text>
+        <Text style={styles.title}> Barbecue Info</Text>
 
         <TextInput
           style={styles.input}
