@@ -19,7 +19,7 @@ export default function Index() {
       <Text style={styles.welcomeText}>Welcome Barbecuer!</Text>
 
       <View>
-        <TouchableOpacity style={styles.button} onPress={() => router.push("admin/admin0")}>
+        <TouchableOpacity style={styles.button} onPress={() => router.push("/admin/admin0")}>
           <Text style={styles.buttonText}>Create</Text>
         </TouchableOpacity>
 
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   button: {
     paddingHorizontal: 20,
     paddingVertical: 10,
-    backgroundColor: "grey",
+    backgroundColor: "orange",
     borderRadius: 5,
     margin: 5,
     alignItems: "center",

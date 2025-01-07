@@ -73,7 +73,7 @@ export default function Admin0() {
   return (
     <>
       <Pressable style={styles.returnToMenuButton} onPress={() => router.push("/")}>
-        <Text style={styles.returnToMenuButtonText}>Main Menu</Text>
+        <Text style={styles.returnToMenuButtonText}>Back to Menu</Text>
       </Pressable>
       <View style={styles.container}>
         <Text style={styles.title}>Barbecue Info</Text>
@@ -126,14 +126,23 @@ export default function Admin0() {
 
 const styles = StyleSheet.create({
   returnToMenuButton: {
-    backgroundColor: 'red',
+    backgroundColor: 'orange',
+    borderRadius: 20,
+    position: 'absolute',
+    top: 20,   
+    left: 15,
+    height:40,
+    width:110,
+    zIndex:2,
+    
   },
   returnToMenuButtonText: {
     color: 'white',
     fontWeight: 'bold',
     fontSize: 15,
-    marginLeft: 20,
-    marginTop: 20,
+    marginLeft: 10,
+    marginTop:10, 
+    zIndex:3,
   },
   container: {
     flex: 1,
@@ -165,22 +174,33 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   button: {
-    backgroundColor: 'grey',
+    backgroundColor: 'green', // Color verde para el botón Save
     padding: 10,
     alignItems: 'center',
     borderRadius: 20,
+    marginHorizontal: 10, // Separación entre botones
   },
   deleteButton: {
-    backgroundColor: '#F44336',
+    backgroundColor: '#FFC107', // Amarillo brillante (hex) que resalta sobre rojo
+    padding: 10,
+    alignItems: 'center',
+    borderRadius: 20,
+    marginHorizontal: 10, // Separación entre botones
   },
   buttonRow: {
-    flexDirection: 'row', // Fixed typo here
-    justifyContent: 'space-between',
+    flexDirection: 'row', // Organiza los botones en fila
+    justifyContent: 'space-between', // Espacio uniforme entre botones
+    alignItems: 'center', // Centra los botones verticalmente
+    marginHorizontal: 20, // Espacio desde los bordes del contenedor
   },
   buttonText: {
-    color: 'white',
+    color: 'white', // Texto blanco para el botón Save
     fontWeight: 'bold',
     fontSize: 16,
-    borderRadius: 25,
+  },
+  deleteButtonText: {
+    color: '#000', // Negro para el texto en el botón Delete, visible sobre amarillo
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 });
