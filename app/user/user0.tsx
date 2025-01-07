@@ -32,18 +32,18 @@ export default function User0() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>User Information</Text>
+      <Text style={styles.title}>Guest Information</Text>
 
       <TextInput
         style={styles.input}
-        placeholder="Enter code"
+        placeholder="Barbecue invitation code"
         value={code}
         onChangeText={setCode}
       />
 
       <TextInput
         style={styles.input}
-        placeholder="Enter name"
+        placeholder="Enter your name"
         value={name}
         onChangeText={setName}
       />
@@ -56,7 +56,7 @@ export default function User0() {
       />
 
       <Pressable style={styles.button} onPress={handleSave}>
-        <Text style={styles.buttonText}>Save and Go to User1</Text>
+        <Text style={styles.buttonText}>Join!</Text>
       </Pressable>
     </View>
   );
@@ -85,10 +85,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   button: {
-    backgroundColor: 'grey',
-    padding: 10,
+    backgroundColor: 'green',
+    width: 100,
+    height: 30,
     borderRadius: 20,
+    position:'center',
     alignItems: 'center',
+    justifyContent: 'center', // Centra el texto dentro del botón
     marginTop: 20,
   },
   buttonText: {
