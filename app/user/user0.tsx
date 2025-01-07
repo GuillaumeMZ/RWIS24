@@ -89,8 +89,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 30,
     borderRadius: 20,
-    position:'center',
-    alignItems: 'center',
+        alignItems: 'center',
     justifyContent: 'center', // Centra el texto dentro del botón
     marginTop: 20,
   },
