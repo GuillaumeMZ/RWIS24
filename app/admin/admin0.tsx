@@ -141,7 +141,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'red',
     padding: 20,
-    justifyContent: 'center',
   },
   title: {
     color: 'white',
