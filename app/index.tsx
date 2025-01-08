@@ -1,33 +1,25 @@
 import React from "react";
-import { Text, View, TextInput, TouchableOpacity, StyleSheet, Image, StatusBar } from "react-native";
-import { useRouter, Stack } from 'expo-router';
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { useRouter } from "expo-router";
 
 export default function Index() {
   const router = useRouter();
 
-  const handleSubmit = () => {};
-
-
   return (
     <View style={styles.container}>
-      
-      <Image
-        source={require("../images/bbq_clip_art.png")}
-        style={styles.image}
-      />
-
-      <Text style={styles.welcomeText}>Welcome Barbecuer!</Text>
-
-      <View>
-        <TouchableOpacity style={styles.button} onPress={() => router.push("/admin/admin0")}>
-          <Text style={styles.buttonText}>Create</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.button} onPress={() => router.push("/user/user0")}>
-          <Text style={styles.buttonText}>Join</Text>
-        </TouchableOpacity>
-      </View>
-
+      <Text style={styles.title}>Welcome to BBQ Planner!</Text>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => router.push("./AdminBase")}
+      >
+        <Text style={styles.buttonText}>Administrator</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => router.push("./UserBase")}
+      >
+        <Text style={styles.buttonText}>User</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -37,47 +29,28 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "red", // Red background
+    paddingHorizontal: 20,
+    backgroundColor: "#f5f5f5",
   },
-  image: {
-    width: 200, // Adjust the width to fit your design
-    height: 200, // Adjust the height to fit your design
-    marginBottom: 20,
-  },
-  welcomeText: {
+  title: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "white",
-    marginBottom: 20,
-  },
-  inputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    width: "80%",
-    borderWidth: 1,
-    borderColor: "#fff",
-    borderRadius: 5,
-    backgroundColor: "white",
-  },
-  input: {
-    flex: 1,
-    padding: 10,
-    borderColor: "transparent",
-    borderRadius: 5,
+    marginBottom: 30,
+    color: "#333",
+    textAlign: "center",
   },
   button: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    backgroundColor: "orange",
+    backgroundColor: "#ff7043",
+    paddingVertical: 15,
+    paddingHorizontal: 25,
     borderRadius: 5,
-    margin: 5,
+    marginBottom: 15,
     alignItems: "center",
+    width: "80%",
   },
   buttonText: {
-    color: "white",
+    color: "#fff",
     fontSize: 16,
-    fontWeight: "bold",
     textAlign: "center",
   },
 });
-

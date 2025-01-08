@@ -1,16 +1,48 @@
-import { Stack } from "expo-router";
-import { DataProvider } from "./DataContext"; // Import the DataProvider
+import React from "react";
+import { Tabs } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 
-export default function RootLayout() {
+export default function Layout() {
   return (
-    <DataProvider> {/* Wrap the entire navigation structure */}
-      <Stack screenOptions={{ headerShown: true }}>
-        {/* Define the routes */}
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="admin" options={{ headerShown: false }} />
-        <Stack.Screen name="user" options={{ headerShown: false }} />
-      </Stack>
-    </DataProvider>
+    <Tabs
+      screenOptions={({ route }) => ({
+        tabBarStyle: { backgroundColor: "#ff7043" },
+        tabBarActiveTintColor: "#fff",
+        tabBarInactiveTintColor: "#f5f5f5",
+        headerStyle: { backgroundColor: "#ff7043" },
+        headerTintColor: "#fff",
+        headerTitleStyle: { fontWeight: "bold" },
+        tabBarIcon: ({ color, size }) => {
+          let iconName;
+          if (route.name === "Index") {
+            iconName = "home-outline";
+          } else if (route.name === "AdminBase") {
+            iconName = "briefcase-outline";
+          } else if (route.name === "DevMenu") {
+            iconName = "construct-outline";
+          }
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+      })}
+    >
+      <Tabs.Screen
+        name="Index"
+        options={{
+          tabBarLabel: "Home",
+        }}
+      />
+      <Tabs.Screen
+        name="AdminBase"
+        options={{
+          tabBarLabel: "Admin",
+        }}
+      />
+      <Tabs.Screen
+        name="DevMenu"
+        options={{
+          tabBarLabel: "Dev Menu",
+        }}
+      />
+    </Tabs>
   );
 }
-
