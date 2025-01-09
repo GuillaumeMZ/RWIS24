@@ -6,8 +6,8 @@ export default function DevMenu() {
   const router = useRouter();
 
   // Lista de todas las pantallas
-  const screens = [
-    { name: "Home (Index)", route: "/Index" },
+  const screens: { name: string; route: string }[] = [
+    { name: "Home (Index)", route: "/index" },
     { name: "Admin Base", route: "/AdminBase" },
     { name: "Managing Barbecue", route: "/ManagingBarbecue" },
     { name: "Ingredient Managing", route: "/IngredientManaging" },
@@ -25,7 +25,7 @@ export default function DevMenu() {
         <TouchableOpacity
           key={index}
           style={styles.button}
-          onPress={() => router.push(screen.route)}
+          onPress={() => router.push(screen.route as any)}
         >
           <Text style={styles.buttonText}>{screen.name}</Text>
         </TouchableOpacity>

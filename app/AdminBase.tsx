@@ -39,7 +39,7 @@ export default function AdminBase() {
   };
 
   // Manejar la eliminación de una barbacoa
-  const handleDeleteBarbecue = (id) => {
+  const handleDeleteBarbecue = (id: any) => {
     setBarbecues(barbecues.filter((barbecue) => barbecue.id !== id));
   };
 
@@ -47,7 +47,7 @@ export default function AdminBase() {
     <View style={styles.container}>
       {/* Header con título y botón de vuelta */}
       <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={() => router.push("./index")}>
+        <TouchableOpacity style={styles.backButton} onPress={() => router.push("./")}>
           <Text style={styles.backButtonText}>Back</Text>
         </TouchableOpacity>
         <Text style={styles.title}>Your Barbecues</Text>

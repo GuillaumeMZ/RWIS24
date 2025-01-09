@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { View, Text, FlatList, TextInput, TouchableOpacity, Modal, StyleSheet } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { View, Text, FlatList, TouchableOpacity, TextInput, Modal, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function IngredientManaging() {
   const router = useRouter();
-
   const [ingredients, setIngredients] = useState([
     { name: "Beef", standardPortion: 300, costPerPortion: 1500, unit: "grams" },
     { name: "Chicken", standardPortion: 300, costPerPortion: 800, unit: "grams" },
@@ -16,7 +15,6 @@ export default function IngredientManaging() {
     { name: "Bread", standardPortion: 2, costPerPortion: 200, unit: "units" },
     { name: "Sauces", standardPortion: 0.5, costPerPortion: 400, unit: "bottles" },
   ]);
-
   const [isAdding, setIsAdding] = useState(false);
   const [newIngredient, setNewIngredient] = useState({
     name: "",
@@ -28,17 +26,17 @@ export default function IngredientManaging() {
   // Agregar un nuevo ingrediente
   const handleAddIngredient = () => {
     if (
-      newIngredient.name.trim() === "" ||
-      newIngredient.standardPortion === "" ||
-      newIngredient.costPerPortion === "" ||
-      newIngredient.unit.trim() === ""
+      !newIngredient.name.trim() ||
+      !newIngredient.standardPortion ||
+      !newIngredient.costPerPortion ||
+      !newIngredient.unit.trim()
     ) {
       alert("Please fill in all fields");
       return;
     }
 
-    setIngredients([
-      ...ingredients,
+    setIngredients((prev) => [
+      ...prev,
       {
         name: newIngredient.name,
         standardPortion: parseFloat(newIngredient.standardPortion),
@@ -48,18 +46,22 @@ export default function IngredientManaging() {
     ]);
 
     setNewIngredient({ name: "", standardPortion: "", costPerPortion: "", unit: "" });
-    setIsAdding(false); // Cierra la ventana después de añadir
+    setIsAdding(false);
   };
 
-  // Eliminar un ingrediente
+  // Borrar un ingrediente
   const handleDeleteIngredient = (name) => {
-    setIngredients(ingredients.filter((ingredient) => ingredient.name !== name));
+    setIngredients((prev) => prev.filter((ingredient) => ingredient.name !== name));
   };
 
   return (
     <View style={styles.container}>
       {/* Botón de vuelta */}
-      <TouchableOpacity style={styles.backButton} onPress={() => router.push("./ManagingBarbecue")}>
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => router.push("./ManagingBarbecue")}
+        activeOpacity={0.8}
+      >
         <Text style={styles.backButtonText}>Back</Text>
       </TouchableOpacity>
 
@@ -84,12 +86,12 @@ export default function IngredientManaging() {
         )}
       />
 
-      {/* Botón para abrir ventana de añadir ingrediente */}
+      {/* Botón para abrir la pestaña de añadir */}
       <TouchableOpacity style={styles.addButton} onPress={() => setIsAdding(true)}>
-        <Text style={styles.addButtonText}>Add Ingredient</Text>
+        <Text style={styles.addButtonText}>+ Add Ingredient</Text>
       </TouchableOpacity>
 
-      {/* Ventana de añadir ingrediente */}
+      {/* Ventana modal para añadir ingrediente */}
       <Modal visible={isAdding} animationType="slide" transparent>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
@@ -116,7 +118,7 @@ export default function IngredientManaging() {
             />
             <TextInput
               style={styles.input}
-              placeholder="Unit (e.g., grams, cans)"
+              placeholder="Unit (e.g., grams, bottles)"
               value={newIngredient.unit}
               onChangeText={(text) => setNewIngredient({ ...newIngredient, unit: text })}
             />
@@ -151,9 +153,13 @@ const styles = StyleSheet.create({
     top: 20,
     left: 20,
     backgroundColor: "#FF7043",
-    paddingVertical: 10,
-    paddingHorizontal: 15,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
     borderRadius: 5,
+    shadowColor: "#000",
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    shadowOffset: { width: 1, height: 2 },
   },
   backButtonText: {
     color: "#FFFFFF",
@@ -175,7 +181,6 @@ const styles = StyleSheet.create({
   },
   ingredientDetails: {
     flex: 1,
-    marginRight: 10,
   },
   ingredientName: {
     fontSize: 16,
@@ -187,21 +192,22 @@ const styles = StyleSheet.create({
     color: "#555",
   },
   addButton: {
-    backgroundColor: "#FFA726",
-    padding: 15,
+    backgroundColor: "#4CAF50",
+    paddingVertical: 15,
     borderRadius: 5,
     alignItems: "center",
     marginTop: 20,
   },
   addButtonText: {
-    color: "#FFF",
+    color: "#FFFFFF",
     fontSize: 16,
+    fontWeight: "bold",
   },
   modalContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.5)",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
     width: "90%",
@@ -216,7 +222,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   input: {
-    backgroundColor: "#FFF",
+    backgroundColor: "#F5F5F5",
     padding: 10,
     borderRadius: 5,
     marginBottom: 10,
