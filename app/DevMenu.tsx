@@ -7,7 +7,7 @@ export default function DevMenu() {
 
   // Lista de todas las pantallas
   const screens: { name: string; route: string }[] = [
-    { name: "Home (Index)", route: "/index" },
+    { name: "Home (Index)", route: "/" },
     { name: "Admin Base", route: "/AdminBase" },
     { name: "Managing Barbecue", route: "/ManagingBarbecue" },
     { name: "Ingredient Managing", route: "/IngredientManaging" },

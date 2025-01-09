@@ -13,14 +13,18 @@ export default function Layout() {
         headerTintColor: "#fff",
         headerTitleStyle: { fontWeight: "bold" },
         tabBarIcon: ({ color, size }) => {
-          let iconName;
+          let iconName: keyof typeof Ionicons.glyphMap;
+
           if (route.name === "Index") {
             iconName = "home-outline";
-          } else if (route.name === "AdminBase") {
+          } else if (route.name === "Admin") {
             iconName = "briefcase-outline";
-          } else if (route.name === "DevMenu") {
+          } else if (route.name === "User") {
+            iconName = "people-outline";
+          } else if (route.name === "DevTools") {
             iconName = "construct-outline";
           }
+
           return <Ionicons name={iconName} size={size} color={color} />;
         },
       })}
@@ -32,15 +36,23 @@ export default function Layout() {
         }}
       />
       <Tabs.Screen
-        name="AdminBase"
+        name="Admin"
         options={{
           tabBarLabel: "Admin",
+          headerShown: true,
         }}
       />
       <Tabs.Screen
-        name="DevMenu"
+        name="User"
         options={{
-          tabBarLabel: "Dev Menu",
+          tabBarLabel: "User",
+          headerShown: true,
+        }}
+      />
+      <Tabs.Screen
+        name="DevTools"
+        options={{
+          tabBarLabel: "Dev Tools",
         }}
       />
     </Tabs>
