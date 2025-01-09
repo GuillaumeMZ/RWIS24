@@ -7,7 +7,7 @@ export default function AdminBase() {
   const router = useRouter();
   const [isCreating, setIsCreating] = useState(false);
 
-  // Lista inicial de barbacoas con título, fecha y descripción
+  // Lista inicial de barbacoas
   const [barbecues, setBarbecues] = useState([
     { id: 1, name: "Summer BBQ Party", date: "2025-01-15", description: "A fun summer barbecue with friends!" },
     { id: 2, name: "John's Birthday Bash", date: "2025-02-05", description: "Celebrating John's big day with BBQ and drinks!" },
@@ -18,43 +18,36 @@ export default function AdminBase() {
     name: "",
     date: "",
     description: "",
+    accessCode: "",
   });
 
-  // Manejar la creación de una nueva barbacoa
+  // Crear nueva barbacoa
   const handleCreateBarbecue = () => {
-    if (newBarbecue.name.trim() === "" || newBarbecue.date.trim() === "") {
+    if (!newBarbecue.name || !newBarbecue.date || !newBarbecue.accessCode) {
       alert("Please fill in all fields");
       return;
     }
 
     const newId = barbecues.length > 0 ? barbecues[barbecues.length - 1].id + 1 : 1;
-    const newEntry = {
-      id: newId,
-      ...newBarbecue,
-    };
-
+    const newEntry = { id: newId, ...newBarbecue };
     setBarbecues([...barbecues, newEntry]);
-    setNewBarbecue({ name: "", date: "", description: "" });
+    setNewBarbecue({ name: "", date: "", description: "", accessCode: "" });
     setIsCreating(false);
   };
 
-  // Manejar la eliminación de una barbacoa
-  const handleDeleteBarbecue = (id: any) => {
+  // Eliminar barbacoa
+  const handleDeleteBarbecue = (id) => {
     setBarbecues(barbecues.filter((barbecue) => barbecue.id !== id));
   };
 
   return (
     <View style={styles.container}>
-      {/* Header con título y botón de vuelta */}
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={() => router.push("./")}>
-          <Text style={styles.backButtonText}>Back</Text>
-        </TouchableOpacity>
-        <Text style={styles.title}>Your Barbecues</Text>
-        <TouchableOpacity style={styles.addButton} onPress={() => setIsCreating(true)}>
-          <Text style={styles.addButtonText}>+</Text>
-        </TouchableOpacity>
-      </View>
+      {/* Botón de vuelta atrás */}
+      <TouchableOpacity style={styles.backButton} onPress={() => router.push("./")}>
+        <Text style={styles.backButtonText}>Back</Text>
+      </TouchableOpacity>
+
+      <Text style={styles.title}>Your Barbecues</Text>
 
       {/* Lista de barbacoas */}
       <FlatList
@@ -79,7 +72,7 @@ export default function AdminBase() {
         )}
       />
 
-      {/* Formulario para agregar nueva barbacoa */}
+      {/* Formulario para crear barbacoa */}
       {isCreating && (
         <View style={styles.createContainer}>
           <TextInput
@@ -100,10 +93,31 @@ export default function AdminBase() {
             value={newBarbecue.description}
             onChangeText={(text) => setNewBarbecue({ ...newBarbecue, description: text })}
           />
-          <TouchableOpacity style={styles.createButton} onPress={handleCreateBarbecue}>
-            <Text style={styles.createButtonText}>Create</Text>
-          </TouchableOpacity>
+          <TextInput
+            style={styles.input}
+            placeholder="Access Code"
+            value={newBarbecue.accessCode}
+            onChangeText={(text) => setNewBarbecue({ ...newBarbecue, accessCode: text })}
+          />
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.createButton} onPress={handleCreateBarbecue}>
+              <Text style={styles.createButtonText}>Create</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.cancelButton}
+              onPress={() => setIsCreating(false)}
+            >
+              <Text style={styles.cancelButtonText}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
         </View>
+      )}
+
+      {/* Botón para abrir el formulario */}
+      {!isCreating && (
+        <TouchableOpacity style={styles.addButton} onPress={() => setIsCreating(true)}>
+          <Text style={styles.addButtonText}>+</Text>
+        </TouchableOpacity>
       )}
     </View>
   );
@@ -115,37 +129,22 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: "#f5f5f5",
   },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-  },
   backButton: {
-    backgroundColor: "#007bff",
+    backgroundColor: "orange",
     paddingVertical: 10,
     paddingHorizontal: 15,
     borderRadius: 5,
+    marginBottom: 20,
+    width: 70,
   },
   backButtonText: {
     color: "#fff",
     fontSize: 16,
   },
-  addButton: {
-    backgroundColor: "#ff7043",
-    borderRadius: 20,
-    width: 40,
-    height: 40,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  addButtonText: {
-    color: "#fff",
+  title: {
     fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
   },
   barbecueItem: {
     backgroundColor: "#fff",
@@ -186,14 +185,43 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 10,
   },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
   createButton: {
+    flex: 2,
     backgroundColor: "#4caf50",
     padding: 15,
     borderRadius: 5,
     alignItems: "center",
+    marginRight: 10,
   },
   createButtonText: {
     color: "#fff",
     fontSize: 16,
+  },
+  cancelButton: {
+    flex: 1,
+    backgroundColor: "#f44336",
+    padding: 15,
+    borderRadius: 5,
+    alignItems: "center",
+  },
+  cancelButtonText: {
+    color: "#fff",
+    fontSize: 16,
+  },
+  addButton: {
+    backgroundColor: "#ff7043",
+    borderRadius: 20,
+    width: 40,
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  addButtonText: {
+    color: "#fff",
+    fontSize: 24,
   },
 });

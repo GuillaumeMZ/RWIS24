@@ -16,6 +16,14 @@ export default function IngredientManaging() {
     { name: "Sauces", standardPortion: 0.5, costPerPortion: 400, unit: "bottles" },
   ]);
   const [isAdding, setIsAdding] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentIngredient, setCurrentIngredient] = useState<{
+    name: string;
+    standardPortion: number;
+    costPerPortion: number;
+    unit: string;
+  } | null>(null);
+
   const [newIngredient, setNewIngredient] = useState({
     name: "",
     standardPortion: "",
@@ -23,7 +31,6 @@ export default function IngredientManaging() {
     unit: "",
   });
 
-  // Agregar un nuevo ingrediente
   const handleAddIngredient = () => {
     if (
       !newIngredient.name.trim() ||
@@ -49,14 +56,28 @@ export default function IngredientManaging() {
     setIsAdding(false);
   };
 
-  // Borrar un ingrediente
-  const handleDeleteIngredient = (name) => {
+  const handleDeleteIngredient = (name:string) => {
     setIngredients((prev) => prev.filter((ingredient) => ingredient.name !== name));
+  };
+
+  const handleEditIngredient = () => {
+    if (currentIngredient) {
+      setIngredients((prev) =>
+        prev.map((ingredient) =>
+          ingredient.name === currentIngredient.name ? currentIngredient : ingredient
+        )
+      );
+    }
+    setIsEditing(false);
+  };
+
+  const openEditModal = (ingredient:any) => {
+    setCurrentIngredient(ingredient);
+    setIsEditing(true);
   };
 
   return (
     <View style={styles.container}>
-      {/* Botón de vuelta */}
       <TouchableOpacity
         style={styles.backButton}
         onPress={() => router.push("./ManagingBarbecue")}
@@ -65,14 +86,18 @@ export default function IngredientManaging() {
         <Text style={styles.backButtonText}>Back</Text>
       </TouchableOpacity>
 
+      <View style={styles.spaceBelowButton} />
+
       <Text style={styles.title}>Manage Ingredients</Text>
 
-      {/* Lista de ingredientes */}
       <FlatList
         data={ingredients}
         keyExtractor={(item) => item.name}
         renderItem={({ item }) => (
-          <View style={styles.ingredientItem}>
+          <TouchableOpacity
+            style={styles.ingredientItem}
+            onPress={() => openEditModal(item)}
+          >
             <View style={styles.ingredientDetails}>
               <Text style={styles.ingredientName}>{item.name}</Text>
               <Text style={styles.ingredientInfo}>
@@ -82,50 +107,80 @@ export default function IngredientManaging() {
             <TouchableOpacity onPress={() => handleDeleteIngredient(item.name)}>
               <Ionicons name="trash" size={24} color="red" />
             </TouchableOpacity>
-          </View>
+          </TouchableOpacity>
         )}
       />
 
-      {/* Botón para abrir la pestaña de añadir */}
       <TouchableOpacity style={styles.addButton} onPress={() => setIsAdding(true)}>
         <Text style={styles.addButtonText}>+ Add Ingredient</Text>
       </TouchableOpacity>
 
-      {/* Ventana modal para añadir ingrediente */}
-      <Modal visible={isAdding} animationType="slide" transparent>
+      <Modal visible={isAdding || isEditing} animationType="slide" transparent>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Add Ingredient</Text>
+            <Text style={styles.modalTitle}>
+              {isEditing ? "Edit Ingredient" : "Add Ingredient"}
+            </Text>
             <TextInput
               style={styles.input}
               placeholder="Ingredient Name"
-              value={newIngredient.name}
-              onChangeText={(text) => setNewIngredient({ ...newIngredient, name: text })}
+              value={isEditing && currentIngredient ? currentIngredient.name : newIngredient.name}
+              onChangeText={(text) =>
+                isEditing
+                  ? setCurrentIngredient({ ...currentIngredient as any, name: text })
+                  : setNewIngredient({ ...newIngredient, name: text })
+              }
             />
             <TextInput
               style={styles.input}
               placeholder="Portion Size"
               keyboardType="numeric"
-              value={newIngredient.standardPortion}
-              onChangeText={(text) => setNewIngredient({ ...newIngredient, standardPortion: text })}
+              value={
+                isEditing
+                  ? currentIngredient?.standardPortion.toString() || ""
+                  : newIngredient.standardPortion
+              }
+              onChangeText={(text) =>
+                isEditing
+                  ? setCurrentIngredient({ ...currentIngredient, standardPortion: parseFloat(text) } as { name: string; standardPortion: number; costPerPortion: number; unit: string })
+                  : setNewIngredient({ ...newIngredient, standardPortion: text })
+              }
             />
             <TextInput
               style={styles.input}
               placeholder="Cost (in yen)"
               keyboardType="numeric"
-              value={newIngredient.costPerPortion}
-              onChangeText={(text) => setNewIngredient({ ...newIngredient, costPerPortion: text })}
+              value={
+                isEditing
+                  ? currentIngredient?.costPerPortion.toString() || ""
+                  : newIngredient.costPerPortion
+              }
+              onChangeText={(text) =>
+                isEditing
+                  ? setCurrentIngredient({ ...currentIngredient, costPerPortion: parseFloat(text) } as { name: string; standardPortion: number; costPerPortion: number; unit: string })
+                  : setNewIngredient({ ...newIngredient, costPerPortion: text })
+              }
             />
             <TextInput
               style={styles.input}
               placeholder="Unit (e.g., grams, bottles)"
-              value={newIngredient.unit}
-              onChangeText={(text) => setNewIngredient({ ...newIngredient, unit: text })}
+              value={isEditing && currentIngredient ? currentIngredient.unit : newIngredient.unit}
+              onChangeText={(text) =>
+                isEditing
+                  ? setCurrentIngredient({ ...currentIngredient, unit: text } as { name: string; standardPortion: number; costPerPortion: number; unit: string })
+                  : setNewIngredient({ ...newIngredient, unit: text })
+              }
             />
-            <TouchableOpacity style={styles.saveButton} onPress={handleAddIngredient}>
+            <TouchableOpacity
+              style={styles.saveButton}
+              onPress={isEditing ? handleEditIngredient : handleAddIngredient}
+            >
               <Text style={styles.saveButtonText}>Save</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.cancelButton} onPress={() => setIsAdding(false)}>
+            <TouchableOpacity
+              style={styles.cancelButton}
+              onPress={() => (isEditing ? setIsEditing(false) : setIsAdding(false))}
+            >
               <Text style={styles.cancelButtonText}>Cancel</Text>
             </TouchableOpacity>
           </View>
@@ -141,13 +196,6 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: "#FFF4E5",
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
-    color: "#FF7043",
-    textAlign: "center",
-  },
   backButton: {
     position: "absolute",
     top: 20,
@@ -161,9 +209,19 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     shadowOffset: { width: 1, height: 2 },
   },
+  spaceBelowButton: {
+    marginTop: 60, // Añade espacio debajo del botón
+  },
   backButtonText: {
     color: "#FFFFFF",
     fontSize: 16,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
+    color: "#FF7043",
+    textAlign: "center",
   },
   ingredientItem: {
     backgroundColor: "#FFF",

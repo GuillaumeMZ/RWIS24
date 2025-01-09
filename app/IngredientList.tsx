@@ -3,13 +3,13 @@ import { View, Text, TouchableOpacity, FlatList, StyleSheet } from "react-native
 import { useRouter } from "expo-router";
 
 const ingredients = [
-  { id: 1, name: "Beef", portionSize: 300, unit: "grams" },
-  { id: 2, name: "Chicken", portionSize: 300, unit: "grams" },
+  { id: 1, name: "Beef Skewers", portionSize: 300, unit: "grams" },
+  { id: 2, name: "Chicken Skewers", portionSize: 300, unit: "grams" },
   { id: 3, name: "Sausages", portionSize: 200, unit: "grams" },
-  { id: 4, name: "Beer", portionSize: 3, unit: "cans" },
-  { id: 5, name: "Soft Drinks", portionSize: 3, unit: "cans" },
+  { id: 4, name: "Beer", portionSize: 2, unit: "cans" },
+  { id: 5, name: "Soft Drinks", portionSize: 2, unit: "cans" },
   { id: 6, name: "Vegetables", portionSize: 50, unit: "grams" },
-  { id: 7, name: "Bread", portionSize: 2, unit: "units" },
+  { id: 7, name: "Bread", portionSize: 2, unit: "slices" },
   { id: 8, name: "Sauces", portionSize: 0.5, unit: "bottles" },
 ];
 
@@ -22,27 +22,31 @@ export default function IngredientList() {
     }))
   );
 
-  const adjustPortions = (id: number, adjustment: number) => {
-    setSelectedQuantities((prev) =>
-      prev.map((item) =>
-        item.id === id
-          ? {
-              ...item,
-              portions: Math.max(item.portions + adjustment, 0), // Evita raciones negativas
-            }
-          : item
-      )
+interface Ingredient {
+    id: number;
+    name: string;
+    portionSize: number;
+    unit: string;
+}
+
+interface SelectedQuantity {
+    id: number;
+    portions: number;
+}
+
+const adjustPortions = (id: number, adjustment: number) => {
+    setSelectedQuantities((prev: SelectedQuantity[]) =>
+        prev.map((item) =>
+            item.id === id
+                ? { ...item, portions: Math.max(item.portions + adjustment, 0) }
+                : item
+        )
     );
-  };
+};
 
-  const getPortions = (id: number) => {
-    return selectedQuantities.find((item) => item.id === id)?.portions || 0;
-  };
+  const getPortions = (id:number) => selectedQuantities.find((item) => item.id === id)?.portions || 0;
 
-  // Función para formatear números eliminando .00 si es entero
-  const formatNumber = (num: number) => {
-    return Number.isInteger(num) ? num.toString() : num.toFixed(1);
-  };
+  const formatNumber = (num:number) => (Number.isInteger(num) ? num.toString() : num.toFixed(1));
 
   return (
     <View style={styles.container}>
@@ -55,10 +59,12 @@ export default function IngredientList() {
       </TouchableOpacity>
 
       {/* Título y subtítulo */}
-      <Text style={styles.title}>Select how much you want of every food!</Text>
-      <Text style={styles.subtitle}>
-        Quantities for a normal person correspond to 1 portion.
-      </Text>
+      <View style={styles.contentContainer}>
+        <Text style={styles.title}>Select how much you want of every food!</Text>
+        <Text style={styles.subtitle}>
+          Quantities for a normal person correspond to 1 portion.
+        </Text>
+      </View>
 
       {/* Lista de ingredientes */}
       <FlatList
@@ -119,10 +125,14 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 15,
     borderRadius: 5,
+    zIndex: 10, // Asegura que el botón esté siempre encima
   },
   backButtonText: {
     color: "#FFFFFF",
     fontSize: 16,
+  },
+  contentContainer: {
+    marginTop: 60, // Agrega espacio para evitar interferencia con el botón
   },
   title: {
     fontSize: 24,
@@ -178,11 +188,12 @@ const styles = StyleSheet.create({
     color: "#333",
   },
   finalButton: {
-    backgroundColor: "#4CAF50",
+    backgroundColor: "green",
     padding: 15,
     borderRadius: 5,
     alignItems: "center",
     marginTop: 20,
+
   },
   finalButtonText: {
     color: "#FFF",
