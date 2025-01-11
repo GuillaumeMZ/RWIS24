@@ -36,7 +36,7 @@ export default function AdminBase() {
   };
 
   // Eliminar barbacoa
-  const handleDeleteBarbecue = (id) => {
+  const handleDeleteBarbecue = (id: number) => {
     setBarbecues(barbecues.filter((barbecue) => barbecue.id !== id));
   };
 
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#f5f5f5",
   },
   backButton: {
-    backgroundColor: "orange",
+    backgroundColor: "#ff7043",
     paddingVertical: 10,
     paddingHorizontal: 15,
     borderRadius: 5,
