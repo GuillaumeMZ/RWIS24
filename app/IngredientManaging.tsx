@@ -6,14 +6,14 @@ import { Ionicons } from "@expo/vector-icons";
 export default function IngredientManaging() {
   const router = useRouter();
   const [ingredients, setIngredients] = useState([
-    { name: "Beef", standardPortion: 300, costPerPortion: 1500, unit: "grams" },
-    { name: "Chicken", standardPortion: 300, costPerPortion: 800, unit: "grams" },
-    { name: "Sausages", standardPortion: 200, costPerPortion: 600, unit: "grams" },
-    { name: "Beer", standardPortion: 3, costPerPortion: 500, unit: "cans" },
+    { name: "Beef", standardPortion: 300, costPerPortion: 800, unit: "grams" },
+    { name: "Chicken", standardPortion: 300, costPerPortion: 300, unit: "grams" },
+    { name: "Sausages", standardPortion: 200, costPerPortion: 400, unit: "grams" },
+    { name: "Beer", standardPortion: 3, costPerPortion: 350, unit: "cans" },
     { name: "Soft Drinks", standardPortion: 3, costPerPortion: 300, unit: "cans" },
-    { name: "Vegetables", standardPortion: 50, costPerPortion: 700, unit: "grams" },
-    { name: "Bread", standardPortion: 2, costPerPortion: 200, unit: "units" },
-    { name: "Sauces", standardPortion: 0.5, costPerPortion: 400, unit: "bottles" },
+    { name: "Vegetables", standardPortion: 50, costPerPortion: 100, unit: "grams" },
+    { name: "Bread", standardPortion: 2, costPerPortion: 50, unit: "units" },
+    { name: "Sauces", standardPortion: 0.5, costPerPortion: 100, unit: "bottles" },
   ]);
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -88,7 +88,7 @@ export default function IngredientManaging() {
 
       <View style={styles.spaceBelowButton} />
 
-      <Text style={styles.title}>Manage Ingredients</Text>
+      <Text style={styles.title}>Manage Ingredients Portions</Text>
 
       <FlatList
         data={ingredients}
