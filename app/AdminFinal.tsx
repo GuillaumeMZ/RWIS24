@@ -6,14 +6,14 @@ export default function UserFinal() {
   const router = useRouter();
 
   const totalIngredients = [
-    { id: 1, name: "Beef", quantity: "4500 grams", price: "22500 yen" },
-    { id: 2, name: "Chicken", quantity: "3600 grams", price: "9600 yen" },
-    { id: 3, name: "Sausages", quantity: "2400 grams", price: "7200 yen" },
-    { id: 4, name: "Beer", quantity: "36 cans", price: "6000 yen" },
+    { id: 1, name: "Beef", quantity: "4500 grams", price: "9000 yen" },
+    { id: 2, name: "Chicken", quantity: "3600 grams", price: "5500 yen" },
+    { id: 3, name: "Sausages", quantity: "2400 grams", price: "3200 yen" },
+    { id: 4, name: "Beer", quantity: "36 cans", price: "4000 yen" },
     { id: 5, name: "Soft Drinks", quantity: "36 cans", price: "3600 yen" },
-    { id: 6, name: "Vegetables", quantity: "700 grams", price: "9800 yen" },
-    { id: 7, name: "Bread", quantity: "14 units", price: "2800 yen" },
-    { id: 8, name: "Sauces", quantity: "7.5 bottles", price: "6000 yen" },
+    { id: 6, name: "Vegetables", quantity: "700 grams", price: "1000 yen" },
+    { id: 7, name: "Bread", quantity: "14 slices", price: "500 yen" },
+    { id: 8, name: "Sauces", quantity: "7.5 bottles", price: "2000 yen" },
   ];
 
   const guests = [
@@ -21,10 +21,17 @@ export default function UserFinal() {
     { id: 2, name: "Mary" },
     { id: 3, name: "Peter" },
     { id: 4, name: "Anna" },
-    { id: 5, name: "Sophia" },
-    { id: 6, name: "Charles" },
-    { id: 7, name: "Laura" },
-    { id: 8, name: "James" },
+    { id: 5, name: "Louis" },
+    { id: 6, name: "Sophia" },
+    { id: 7, name: "Charles" },
+    { id: 8, name: "Laura" },
+    { id: 9, name: "James" },
+    { id: 10, name: "Clara" },
+    { id: 11, name: "Daniel" },
+    { id: 12, name: "Helen" },
+    { id: 13, name: "Michael" },
+    { id: 14, name: "Paula" },
+    { id: 15, name: "Andrew" },
   ];
 
   return (
@@ -45,13 +52,13 @@ export default function UserFinal() {
       />
 
       <Text style={styles.sectionTitle}>Guests Attending:</Text>
-      <FlatList
-        data={guests}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <Text style={styles.guestText}>- {item.name}</Text>
-        )}
-      />
+      <View style={styles.guestList}>
+        {guests.map((guest, index) => (
+          <View style={styles.guestColumn} key={index}>
+            <Text style={styles.guestText}>{guest.name}</Text>
+          </View>
+        ))}
+      </View>
 
       {/* Botón de vuelta a UserBase */}
       <TouchableOpacity
@@ -109,10 +116,28 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#555",
   },
+  guestList: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+  },
+  guestColumn: {
+    width: "45%",
+    padding: 10,
+    backgroundColor: "#fff",
+    borderRadius: 5,
+    marginBottom: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 3,
+  },
   guestText: {
     fontSize: 16,
     color: "#333",
-    marginVertical: 5,
+    textAlign: "center",
+    fontWeight: "bold",
   },
   button: {
     backgroundColor: "#ff7043",

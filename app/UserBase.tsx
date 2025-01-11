@@ -24,7 +24,16 @@ export default function UserBase() {
 
   return (
     <View style={styles.container}>
+      {/* Botón de vuelta */}
+      <TouchableOpacity style={styles.backButton} onPress={() => router.push("./")}>
+        <Text style={styles.backButtonText}>Back</Text>
+      </TouchableOpacity>
+
+      {/* Separador entre el botón de vuelta y el contenido */}
+      <View style={styles.separator} />
+
       <Text style={styles.title}>Available Barbecues</Text>
+
       <FlatList
         data={barbecues}
         keyExtractor={(item) => item.id.toString()}
@@ -70,11 +79,30 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: "#f5f5f5",
   },
+  backButton: {
+    position: "absolute",
+    top: 20,
+    left: 20,
+    backgroundColor: "#FF7043",
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+  },
+  backButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    letterSpacing: 1.2,
+  },
+  separator: {
+    marginTop: 80, // Añade espacio entre el botón de vuelta y el contenido principal
+  },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: "bold",
-    marginBottom: 20,
+    marginBottom: 30,
     textAlign: "center",
+    color: "#FF7043",
+    letterSpacing: 1.5,
   },
   barbecueItem: {
     backgroundColor: "#fff",
@@ -91,9 +119,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     color: "#333",
+    letterSpacing: 1.1,
   },
   joinButton: {
-    backgroundColor: "#007bff",
+    backgroundColor: "#FF7043",
     paddingVertical: 15,
     paddingHorizontal: 25,
     borderRadius: 5,
@@ -103,6 +132,7 @@ const styles = StyleSheet.create({
   joinButtonText: {
     color: "#fff",
     fontSize: 16,
+    letterSpacing: 1.2,
   },
   modalContainer: {
     flex: 1,
@@ -140,6 +170,7 @@ const styles = StyleSheet.create({
   confirmButtonText: {
     color: "#fff",
     fontSize: 16,
+    letterSpacing: 1.1,
   },
   cancelButton: {
     backgroundColor: "#ff7043",
@@ -151,5 +182,6 @@ const styles = StyleSheet.create({
   cancelButtonText: {
     color: "#fff",
     fontSize: 16,
+    letterSpacing: 1.1,
   },
 });
