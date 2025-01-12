@@ -8,9 +8,9 @@ export default function UserFinal() {
   // Datos para mostrar lo que el usuario debe llevar
   const userSummary = {
     name: "John",
-    totalCost: 4500,
+    totalCost: 1850,
     items: [
-      { id: 1, name: "Beef", quantity: "900 grams", cost: "4500 yen" },
+      { id: 1, name: "Beef", quantity: "900 grams", cost: "1850 yen" },
     ],
   };
 
