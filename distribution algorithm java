@@ -1,0 +1,105 @@
+import java.util.Arrays;
+
+public class Main {
+
+    public static void main(String[] args) {
+        // Guests data
+        String[] guests = {"John", "Mary", "Peter", "Anna", "Louis", "Sophia", "Charles",
+                "Laura", "James", "Clara", "Daniel", "Helen", "Michael", "Paula", "Andrew"};
+
+        // Ingredients
+        String[] ingredients = {"Beef", "Chicken", "Sausages", "Beer", "Soft Drinks", "Vegetables", "Bread", "Sauces"};
+        double[] stRatQuan = {300, 300, 200, 3, 3, 50, 2, 0.5}; // in grams, cans, or units
+        double[] stRatCost = {1500, 800, 600, 500, 300, 700, 200, 400}; // yen per standard portion
+        String[] units = {"grams", "grams", "grams", "cans", "cans", "grams", "units", "bottles"};
+
+        // Ration matrix
+        double[][] rationsMatrix = {
+                {1, 0.5, 1, 1, 1, 1.5, 0, 1},
+                {1, 1, 0, 0.5, 1, 1, 1, 1},
+                {2, 0, 1.5, 1, 0, 0.5, 1, 1},
+                {1, 1.5, 0, 1, 1, 0.5, 0, 1},
+                {0, 1, 1, 0.5, 1, 1.5, 0, 1},
+                {1, 1, 0.5, 1, 0, 1, 1, 1},
+                {1.5, 0, 1, 1, 1, 0.5, 0, 1},
+                {0, 1, 1.5, 0.5, 1, 1, 1, 1},
+                {1, 1, 0, 1, 1, 1.5, 0, 0.1},
+                {1, 0.5, 1, 0, 1, 1, 1, 1},
+                {1.5, 1, 0, 1, 1, 1, 0, 1},
+                {1, 1.5, 1, 0.5, 1, 0, 1, 1},
+                {1, 1, 0.5, 1, 0, 1, 0, 1},
+                {0.5, 1, 1, 1, 1, 1.5, 0, 1},
+                {1, 0, 1.5, 1, 1, 0.5, 1, 1}
+        };
+
+        // Calculate total quantity of rations
+        double[] totRations = new double[ingredients.length];
+        for (int i = 0; i < rationsMatrix[0].length; i++) {
+            for (double[] row : rationsMatrix) {
+                totRations[i] += row[i];
+            }
+        }
+
+        // Round up number of rations
+        for (int i = 0; i < totRations.length; i++) {
+            totRations[i] = Math.ceil(totRations[i]);
+        }
+
+        // Calculate total cost and quantities needed
+        double totalCost = 0;
+        double[] totalQuantities = new double[ingredients.length];
+        for (int i = 0; i < ingredients.length; i++) {
+            totalQuantities[i] = totRations[i] * stRatQuan[i];
+            totalCost += totRations[i] * stRatCost[i];
+        }
+
+        // Groceries list
+        System.out.println("We need a total of:");
+        for (int i = 0; i < ingredients.length; i++) {
+            System.out.printf("- %.2f %s of %s%n", totalQuantities[i], units[i], ingredients[i]);
+        }
+
+        System.out.println("Total Cost: " + totalCost);
+        System.out.println("Total Quantities: " + Arrays.toString(totalQuantities));
+
+        // Distribute costs among guests
+        double limitCostPerGuest = Math.ceil(totalCost / guests.length / 100) * 100;
+        double[][] purchaseMatrix = new double[guests.length][ingredients.length];
+        double[] totalCostPerGuest = new double[guests.length];
+        double[] asqty = Arrays.copyOf(totRations, totRations.length);
+        int guestIndex = 0;
+        double rport = 0.5;
+
+        for (int i = 0; i < ingredients.length; i++) {
+            while (asqty[i] > 0) {
+                if (totalCostPerGuest[guestIndex] + (rport * stRatCost[i]) <= limitCostPerGuest) {
+                    purchaseMatrix[guestIndex][i] += rport;
+                    asqty[i] -= rport;
+                    totalCostPerGuest[guestIndex] += rport * stRatCost[i];
+                } else {
+                    guestIndex = (guestIndex + 1) % guests.length;
+                }
+            }
+        }
+
+        System.out.println("Purchase Matrix:");
+        for (double[] row : purchaseMatrix) {
+            System.out.println(Arrays.toString(row));
+        }
+
+        // Detailed breakdown for each guest
+        for (int i = 0; i < guests.length; i++) {
+            System.out.println(guests[i] + " needs to buy:");
+            double totalCostForGuest = 0;
+            for (int j = 0; j < ingredients.length; j++) {
+                if (purchaseMatrix[i][j] > 0) {
+                    double quantity = purchaseMatrix[i][j] * stRatQuan[j];
+                    double cost = purchaseMatrix[i][j] * stRatCost[j];
+                    totalCostForGuest += cost;
+                    System.out.printf("  - %.2f %s of %s (%.2f yen)%n", quantity, units[j], ingredients[j], cost);
+                }
+            }
+            System.out.printf("Total cost for %s: %.2f yen%n%n", guests[i], totalCostForGuest);
+        }
+    }
+}
